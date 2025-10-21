@@ -18,8 +18,8 @@ export OUTNAME=lmms-"$VERSION"-anylinux-"$ARCH".AppImage
 # Deploy dependencies
 wget --retry-connrefused --tries=30 "$SHARUN" -O ./quick-sharun
 chmod +x ./quick-sharun
+./quick-sharun /usr/bin/lmms -- --allowroot
 ./quick-sharun \
-	/usr/bin/lmms    \
 	/usr/lib/lmms/*  \
 	/usr/lib/lmms/*/*
 
