@@ -23,12 +23,17 @@ chmod +x ./quick-sharun
 ./quick-sharun \
 	/usr/lib/lmms/*    \
 	/usr/lib/lmms/*/*  \
+	/usr/bin/carla*    \
 	/usr/lib/carla/*   \
 	/usr/lib/carla/*/*
 
 # TODO remove me once quick-sharun add carla deployment
 cp -r /usr/share/carla ./AppDir/share
 cp -rn /usr/lib/carla  ./AppDir/lib
+
+sed -i \
+	-e 's|INSTALL_PREFIX="/usr"|INSTALL_PREFIX="$APPDIR"|' \
+	./AppDir/lib/carla/carla-bridge-lv2-modgui ./AppDir/bin/carla*
 
 echo "Sharunning the carla binaries..."
 bins_to_find="$(find ./AppDir/lib/carla -exec file {} \; | grep -i 'elf.*executable' | awk -F':' '{print $1}')"
