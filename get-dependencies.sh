@@ -7,7 +7,7 @@ EXTRA_PACKAGES="https://raw.githubusercontent.com/pkgforge-dev/Anylinux-AppImage
 
 pacman -Syu --noconfirm \
 	base-devel       \
-  carla            \
+	carla            \
 	curl             \
 	git              \
 	lame             \
@@ -18,7 +18,6 @@ pacman -Syu --noconfirm \
 	libxkbcommon-x11 \
 	libxrandr        \
 	libxtst          \
-	lmms             \
 	pipewire-audio   \
 	pulseaudio       \
 	pulseaudio-alsa  \
@@ -34,4 +33,25 @@ wget --retry-connrefused --tries=30 "$EXTRA_PACKAGES" -O ./get-debloated-pkgs.sh
 chmod +x ./get-debloated-pkgs.sh
 ./get-debloated-pkgs.sh --add-mesa --prefer-nano opus-mini
 
-pacman -Q lmms | awk '{print $2; exit}' > ~/version
+echo "Building lmms..."
+echo "---------------------------------------------------------------"
+sed -i -e 's|EUID == 0|EUID == 69|g' /usr/bin/makepkg
+sed -i \
+	-e 's|-O2|-O3|'                              \
+	-e 's|MAKEFLAGS=.*|MAKEFLAGS="-j$(nproc)"|'  \
+	-e 's|#MAKEFLAGS|MAKEFLAGS|'                 \
+	/etc/makepkg.conf
+cat /etc/makepkg.conf
+
+git clone --depth 1 https://aur.archlinux.org/lmms-git.git ./lmms && (
+	sed -i \
+		-e "s|x86_64|$ARCH|"   \
+		-e "s|'wine|'wine32|g"  \
+		./PKGBUILD
+	cat ./PKGBUILD
+	makepkg -fs --noconfirm
+	ls -la .
+	pacman --noconfirm -U ./*.pkg.tar.*
+)
+
+pacman -Q lmms-git | awk '{print $2; exit}' > ~/version
