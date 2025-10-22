@@ -13,19 +13,20 @@ export DESKTOP=/usr/share/applications/lmms.desktop
 export UPINFO="gh-releases-zsync|${GITHUB_REPOSITORY%/*}|${GITHUB_REPOSITORY#*/}|latest|*$ARCH.AppImage.zsync"
 export DEPLOY_PIPEWIRE=1
 export DEPLOY_OPENGL=1
-#export DEPLOY_PYTHON=1
+export DEPLOY_PYTHON=1
 export OUTNAME=lmms-"$VERSION"-anylinux-"$ARCH".AppImage
 
 # Deploy dependencies
 wget --retry-connrefused --tries=30 "$SHARUN" -O ./quick-sharun
 chmod +x ./quick-sharun
-./quick-sharun /usr/bin/lmms -- --allowroot
 ./quick-sharun \
-	/usr/lib/lmms/*    \
-	/usr/lib/lmms/*/*  \
-	/usr/bin/carla*    \
-	/usr/lib/carla/*   \
-	/usr/lib/carla/*/*
+	/usr/bin/lmms          \
+	/usr/lib/lmms/*        \
+	/usr/lib/lmms/*/*      \
+	/usr/bin/carla*        \
+	/usr/lib/carla/*       \
+	/usr/lib/carla/jack/*  \
+	/usr/lib/carla/styles/*
 
 # TODO remove me once quick-sharun add carla deployment
 cp -r /usr/share/carla ./AppDir/share
