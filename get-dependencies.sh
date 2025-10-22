@@ -45,6 +45,7 @@ cat /etc/makepkg.conf
 
 echo '[multilib]
 Include = /etc/pacman.d/mirrorlist' >> /etc/pacman.conf
+pacman -Syu --noconfirm
 
 # We need wine32 first
 git clone --depth 1 https://aur.archlinux.org/wine32.git ./wine32 && (
