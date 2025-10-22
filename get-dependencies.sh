@@ -44,9 +44,10 @@ sed -i \
 cat /etc/makepkg.conf
 
 git clone --depth 1 https://aur.archlinux.org/lmms-git.git ./lmms && (
+	cd ./lmms
 	sed -i \
 		-e "s|x86_64|$ARCH|"   \
-		-e "s|'wine|'wine32|g"  \
+		-e "s|'wine|'wine32|g" \
 		./PKGBUILD
 	cat ./PKGBUILD
 	makepkg -fs --noconfirm
