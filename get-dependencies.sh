@@ -43,26 +43,27 @@ sed -i \
 	/etc/makepkg.conf
 cat /etc/makepkg.conf
 
-echo '[multilib]
-Include = /etc/pacman.d/mirrorlist' >> /etc/pacman.conf
-pacman -Syu --noconfirm
+#echo '[multilib]
+#Include = /etc/pacman.d/mirrorlist' >> /etc/pacman.conf
+#pacman -Syu --noconfirm
 
 # We need wine32 first
-git clone --depth 1 https://aur.archlinux.org/wine32.git ./wine32 && (
-	cd ./wine32
-	sed -i -e "s|x86_64|$ARCH|" ./PKGBUILD
-	cat ./PKGBUILD
-	makepkg -fs --noconfirm
-	ls -la .
-	pacman --noconfirm -U ./*.pkg.tar.*
-)
+#git clone --depth 1 https://aur.archlinux.org/wine32.git ./wine32 && (
+#	cd ./wine32
+#	sed -i -e "s|x86_64|$ARCH|" ./PKGBUILD
+#	cat ./PKGBUILD
+#	makepkg -fs --noconfirm
+#	ls -la .
+#	pacman --noconfirm -U ./*.pkg.tar.*
+#)
 
 git clone --depth 1 https://aur.archlinux.org/lmms-git.git ./lmms && (
 	cd ./lmms
 	sed -i \
 		-e "s|x86_64|$ARCH|"   \
-		-e "s|'wine|'wine32|g" \
 		./PKGBUILD
+#		-e "s|'wine|'wine32|g" \
+
 	cat ./PKGBUILD
 	makepkg -fs --noconfirm
 	ls -la .
