@@ -11,6 +11,7 @@ pacman -Syu --noconfirm \
 	curl             \
 	git              \
 	lame             \
+	libsamplerate    \
 	libxcb           \
 	libxcursor       \
 	libxi            \
