@@ -66,6 +66,11 @@ git clone --depth 1 https://aur.archlinux.org/lmms-git.git ./lmms && (
 		./PKGBUILD
 #		-e "s|'wine|'wine32|g" \
 
+	if [ "$ARCH" = 'aarch64' ]; then
+		sed -i -e "s|'wine'||g" ./PKGBUILD
+		sed -i -e '/wine/d' ./PKGBUILD
+	fi
+
 	cat ./PKGBUILD
 	makepkg -fs --noconfirm
 	ls -la .
