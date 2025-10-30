@@ -29,6 +29,9 @@ chmod +x ./quick-sharun
 	/usr/lib/carla/jack/*  \
 	/usr/lib/carla/styles/*
 
+# lmms lib dir contains more than just libraries
+cp -rn /usr/lib/lmms ./AppDir/lib
+
 # carla needs a matching pyqt5 version to work
 # so we need to bundle it manually
 cp -r /usr/share/carla ./AppDir/share
