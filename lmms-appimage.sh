@@ -20,17 +20,22 @@ export OUTNAME=lmms-"$VERSION"-anylinux-"$ARCH".AppImage
 wget --retry-connrefused --tries=30 "$SHARUN" -O ./quick-sharun
 chmod +x ./quick-sharun
 ./quick-sharun \
-	/usr/bin/lmms          \
-	/usr/lib/lmms/*        \
-	/usr/lib/lmms/*/*      \
-	/usr/bin/python*       \
-	/usr/bin/carla*        \
-	/usr/lib/carla/*       \
-	/usr/lib/carla/jack/*  \
-	/usr/lib/carla/styles/*
+	/usr/bin/lmms             \
+	/usr/lib/lmms/*           \
+	/usr/lib/lmms/*/*         \
+	/usr/bin/python*          \
+	/usr/bin/carla*           \
+	/usr/lib/carla/*          \
+	/usr/lib/carla/jack/*     \
+	/usr/lib/carla/styles/*   \
+	/usr/lib/alsa-lib/*jack*  \
+	/usr/lib/alsa-lib/*pulse*
 
 # lmms lib dir contains more than just libraries
 cp -rn /usr/lib/lmms ./AppDir/lib
+
+# wrap RemoteZynAddSubFx with sharun
+ln -f ./AppDir/sharun ./AppDir/lib/lmms/RemoteZynAddSubFx
 
 # carla needs a matching pyqt5 version to work
 # so we need to bundle it manually
