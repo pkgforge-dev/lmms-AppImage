@@ -6,7 +6,7 @@ ARCH="$(uname -m)"
 SHARUN="https://raw.githubusercontent.com/pkgforge-dev/Anylinux-AppImages/refs/heads/main/useful-tools/quick-sharun.sh"
 
 export VERSION="$(cat ~/version)"
-export ADD_HOOKS="self-updater.bg.hook"
+export ADD_HOOKS="self-updater.bg.hook:host-libjack.src.hook"
 export ICON=/usr/share/icons/hicolor/scalable/apps/lmms.svg
 export DESKTOP=/usr/share/applications/lmms.desktop
 export UPINFO="gh-releases-zsync|${GITHUB_REPOSITORY%/*}|${GITHUB_REPOSITORY#*/}|latest|*$ARCH.AppImage.zsync"
@@ -25,8 +25,6 @@ chmod +x ./quick-sharun
 	/usr/bin/carla*           \
 	/usr/lib/carla            \
 	/usr/share/carla          \
-	/usr/lib/carla/jack/*     \
-	/usr/lib/carla/styles/*   \
 	/usr/lib/alsa-lib/*jack*  \
 	/usr/lib/alsa-lib/*pulse*
 
