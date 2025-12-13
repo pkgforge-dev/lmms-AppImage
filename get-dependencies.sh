@@ -19,6 +19,7 @@ pacman -Syu --noconfirm \
 	libxkbcommon-x11 \
 	libxrandr        \
 	libxtst          \
+	suil             \
 	pipewire-audio   \
 	pipewire-jack    \
 	pulseaudio       \
