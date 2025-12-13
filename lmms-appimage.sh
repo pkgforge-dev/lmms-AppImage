@@ -19,6 +19,11 @@ export OUTPATH=./dist
 # Deploy dependencies
 wget --retry-connrefused --tries=30 "$SHARUN" -O ./quick-sharun
 chmod +x ./quick-sharun
+
+# copy the plugins dir because otherwise this will deploy all of GTK and Qt6
+mkdir -p ./AppDir/shared/lib
+cp -rv /usr/lib/suil-0 ./AppDir/shared/lib
+
 ./quick-sharun \
 	/usr/bin/lmms             \
 	/usr/lib/lmms             \
@@ -28,9 +33,6 @@ chmod +x ./quick-sharun
 	/usr/share/carla          \
 	/usr/lib/alsa-lib/*jack*  \
 	/usr/lib/alsa-lib/*pulse*
-
-# copy the plugins dir because otherwise this will deploy all of GTK and Qt6
-cp -rv /usr/lib/suil-0 ./AppDir/shared/lib
 
 sed -i \
 	-e 's|INSTALL_PREFIX="/usr"|INSTALL_PREFIX="$APPDIR"|g' \
