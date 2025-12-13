@@ -22,11 +22,15 @@ chmod +x ./quick-sharun
 ./quick-sharun \
 	/usr/bin/lmms             \
 	/usr/lib/lmms             \
+	/usr/lib/libsuil*.so*     \
 	/usr/bin/carla*           \
 	/usr/lib/carla            \
 	/usr/share/carla          \
 	/usr/lib/alsa-lib/*jack*  \
 	/usr/lib/alsa-lib/*pulse*
+
+# copy the plugins dir because otherwise this will deploy all of GTK and Qt6
+cp -rv /usr/lib/suil-0 ./AppDir/shared/lib
 
 sed -i \
 	-e 's|INSTALL_PREFIX="/usr"|INSTALL_PREFIX="$APPDIR"|g' \
