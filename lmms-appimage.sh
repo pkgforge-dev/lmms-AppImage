@@ -20,14 +20,12 @@ export OUTPATH=./dist
 wget --retry-connrefused --tries=30 "$SHARUN" -O ./quick-sharun
 chmod +x ./quick-sharun
 
-# copy the plugins dir because otherwise this will deploy all of GTK and Qt6
-mkdir -p ./AppDir/shared/lib
-cp -rv /usr/lib/suil-0 ./AppDir/shared/lib
-
 ./quick-sharun \
 	/usr/bin/lmms             \
 	/usr/lib/lmms             \
 	/usr/lib/libsuil*.so*     \
+	/usr/lib/suil-*/*x11.so*  \
+	/usr/lib/suil-*/*qt5.so*  \
 	/usr/bin/carla*           \
 	/usr/lib/carla            \
 	/usr/share/carla          \
