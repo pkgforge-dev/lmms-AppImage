@@ -12,8 +12,8 @@ export DESKTOP=/usr/share/applications/lmms.desktop
 export UPINFO="gh-releases-zsync|${GITHUB_REPOSITORY%/*}|${GITHUB_REPOSITORY#*/}|latest|*$ARCH.AppImage.zsync"
 export DEPLOY_PIPEWIRE=1
 export DEPLOY_OPENGL=1
-export DEPLOY_SYS_PYTHON=1
-export EXEC_WRAPPER=1
+export DEPLOY_PYTHON=1
+export ANYLINUX_LIB=1
 export OUTPATH=./dist
 
 # Deploy dependencies
