@@ -15,7 +15,7 @@ export DEPLOY_OPENGL=1
 export DEPLOY_PYTHON=1
 
 # Deploy dependencies
-./quick-sharun \
+quick-sharun \
 	/usr/bin/lmms             \
 	/usr/lib/lmms             \
 	/usr/lib/libsuil*.so*     \
