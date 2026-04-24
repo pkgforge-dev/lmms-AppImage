@@ -1,25 +1,20 @@
 #!/bin/sh
 
-set -eux
+set -eu
 
-ARCH="$(uname -m)"
-SHARUN="https://raw.githubusercontent.com/pkgforge-dev/Anylinux-AppImages/refs/heads/main/useful-tools/quick-sharun.sh"
-
-export VERSION="$(cat ~/version)"
-export ADD_HOOKS="self-updater.bg.hook:host-libjack.src.hook"
+ARCH=$(uname -m)
+VERSION=$(pacman -Q lmms-git | awk '{print $2; exit}') # example command to get version of application here
+export ARCH VERSION
+export OUTPATH=./dist
+export ADD_HOOKS="self-updater.hook:host-libjack.hook"
+export UPINFO="gh-releases-zsync|${GITHUB_REPOSITORY%/*}|${GITHUB_REPOSITORY#*/}|latest|*$ARCH.AppImage.zsync"
 export ICON=/usr/share/icons/hicolor/scalable/apps/lmms.svg
 export DESKTOP=/usr/share/applications/lmms.desktop
-export UPINFO="gh-releases-zsync|${GITHUB_REPOSITORY%/*}|${GITHUB_REPOSITORY#*/}|latest|*$ARCH.AppImage.zsync"
 export DEPLOY_PIPEWIRE=1
 export DEPLOY_OPENGL=1
 export DEPLOY_PYTHON=1
-export ANYLINUX_LIB=1
-export OUTPATH=./dist
 
 # Deploy dependencies
-wget --retry-connrefused --tries=30 "$SHARUN" -O ./quick-sharun
-chmod +x ./quick-sharun
-
 ./quick-sharun \
 	/usr/bin/lmms             \
 	/usr/lib/lmms             \
@@ -37,5 +32,9 @@ sed -i \
 	-e 's|which python3|command -v python3|g'               \
 	./AppDir/lib/carla/carla-*-modgui ./AppDir/bin/carla*
 
-# MAKE APPIMAGE WITH URUNTIME
-./quick-sharun --make-appimage
+# Turn AppDir into AppImage
+quick-sharun --make-appimage
+
+# Test the app for 12 seconds, if the test fails due to the app
+# having issues running in the CI use --simple-test instead
+quick-sharun --test ./dist/*.AppImage

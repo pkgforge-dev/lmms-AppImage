@@ -1,81 +1,37 @@
 #!/bin/sh
 
-set -eux
+set -eu
 
-ARCH="$(uname -m)"
-EXTRA_PACKAGES="https://raw.githubusercontent.com/pkgforge-dev/Anylinux-AppImages/refs/heads/main/useful-tools/get-debloated-pkgs.sh"
+ARCH=$(uname -m)
 
+echo "Installing package dependencies..."
+echo "---------------------------------------------------------------"
 pacman -Syu --noconfirm \
-	base-devel       \
 	carla            \
-	curl             \
-	git              \
-	lame             \
-	libsamplerate    \
-	libxcb           \
-	libxcursor       \
-	libxi            \
-	libxkbcommon     \
-	libxkbcommon-x11 \
-	libxrandr        \
-	libxtst          \
 	suil             \
 	pipewire-audio   \
-	pipewire-jack    \
-	pulseaudio       \
-	pulseaudio-alsa  \
-	qt5ct            \
-	qt5-wayland      \
-	wget             \
-	xorg-server-xvfb \
-	zsync
+	pipewire-jack
+
 
 echo "Installing debloated packages..."
 echo "---------------------------------------------------------------"
-wget --retry-connrefused --tries=30 "$EXTRA_PACKAGES" -O ./get-debloated-pkgs.sh
-chmod +x ./get-debloated-pkgs.sh
-./get-debloated-pkgs.sh --add-common --prefer-nano
+get-debloated-pkgs --add-common --prefer-nano
 
-echo "Building lmms..."
-echo "---------------------------------------------------------------"
-sed -i -e 's|EUID == 0|EUID == 69|g' /usr/bin/makepkg
-sed -i \
-	-e 's|-O2|-O3|'                              \
-	-e 's|MAKEFLAGS=.*|MAKEFLAGS="-j$(nproc)"|'  \
-	-e 's|#MAKEFLAGS|MAKEFLAGS|'                 \
-	/etc/makepkg.conf
-cat /etc/makepkg.conf
+# Comment this out if you need an AUR package
+if [ "$ARCH" = 'aarch64' ]; then
+	export PRE_BUILD_CMDS="
+		sed -i -e 's|\'wine\'||g' ./PKGBUILD
+		sed -i -e '/wine/d'       ./PKGBUILD
+	"
+fi
+make-aur-package lmms-git
 
-#echo '[multilib]
-#Include = /etc/pacman.d/mirrorlist' >> /etc/pacman.conf
-#pacman -Syu --noconfirm
+# If the application needs to be manually built that has to be done down here
 
-# We need wine32 first
-#git clone --depth 1 https://aur.archlinux.org/wine32.git ./wine32 && (
-#	cd ./wine32
-#	sed -i -e "s|x86_64|$ARCH|" ./PKGBUILD
-#	cat ./PKGBUILD
-#	makepkg -fs --noconfirm
-#	ls -la .
-#	pacman --noconfirm -U ./*.pkg.tar.*
-#)
-
-git clone --depth 1 https://aur.archlinux.org/lmms-git.git ./lmms && (
-	cd ./lmms
-	sed -i \
-		-e "s|x86_64|$ARCH|"   \
-		./PKGBUILD
-#		-e "s|'wine|'wine32|g" \
-
-	if [ "$ARCH" = 'aarch64' ]; then
-		sed -i -e "s|'wine'||g" ./PKGBUILD
-		sed -i -e '/wine/d' ./PKGBUILD
-	fi
-
-	cat ./PKGBUILD
-	makepkg -fs --noconfirm
-	ls -la .
-	pacman --noconfirm -U ./*.pkg.tar.*
-)
-
-pacman -Q lmms-git | awk '{print $2; exit}' > ~/version
+# if you also have to make nightly releases check for DEVEL_RELEASE = 1
+#
+# if [ "${DEVEL_RELEASE-}" = 1 ]; then
+# 	nightly build steps
+# else
+# 	regular build steps
+# fi
