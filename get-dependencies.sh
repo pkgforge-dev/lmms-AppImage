@@ -8,6 +8,7 @@ echo "Installing package dependencies..."
 echo "---------------------------------------------------------------"
 pacman -Syu --noconfirm \
 	carla            \
+	sndio            \
 	suil             \
 	pipewire-audio   \
 	pipewire-jack
