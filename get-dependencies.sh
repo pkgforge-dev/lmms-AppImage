@@ -20,7 +20,7 @@ get-debloated-pkgs --add-common --prefer-nano
 # Comment this out if you need an AUR package
 if [ "$ARCH" = 'aarch64' ]; then
 	export PRE_BUILD_CMDS="
-		sed -i -e 's|\'wine\'||g' ./PKGBUILD
+		sed -i -e \"s|'wine'||g\" ./PKGBUILD
 		sed -i -e '/wine/d'       ./PKGBUILD
 	"
 fi
