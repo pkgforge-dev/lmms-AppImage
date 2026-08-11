@@ -20,7 +20,7 @@ quick-sharun \
 	/usr/lib/lmms             \
 	/usr/lib/libsuil*.so*     \
 	/usr/lib/suil-*/*x11.so*  \
-	/usr/lib/suil-*/*qt5.so*  \
+	/usr/lib/suil-*/*qt6.so*  \
 	/usr/bin/carla*           \
 	/usr/lib/carla            \
 	/usr/share/carla          \
